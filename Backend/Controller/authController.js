@@ -6,17 +6,17 @@ const generateToken = (id) =>{
     return jwt.sign({id},process.env.JWT_ACCESS_SECRET,{expiresIn:'30d'});
 };
 
-exports.loginUser = async (req,res)=>{
+exports.loginUser = async (req,res) =>{
     const {email,password} = req.body;
     const user = await User.findOne({email});
 
     if(user && (await user.matchPassword(password))){
-        const token = generateToken(user._id); //create jwt token for 30 days
-        
-        await redisClient.set(`sess:${user._id}`,token,{EX:2592000}); //store session in redis for fast lookup
+        const token = generateToken(user._id);
+
+        await redisClient.set(`sess:${user._id}`,token,{EX:2592000});
 
         res.json({
-            _id: user._id,
+            _id:user._id,
             name:user.name,
             token:token
         });
