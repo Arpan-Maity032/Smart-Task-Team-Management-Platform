@@ -14,4 +14,4 @@ const ProjectSchema = mongoose.Schema({
 
 },{timestamps:true});
 
-module.exports = ProjectSchema;
+module.exports = mongoose.model(Project,ProjectSchema);

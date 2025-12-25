@@ -1,8 +1,8 @@
 const mongoose = require('mongoose');
 
 const TaskSchema = mongoose.Schema({
-    project:{type:mongoose.Schema.Types.ObjectId, ref:'ProjectSchema',required:true},
-    assignee:{type:mongoose.Schema.Types.ObjectId,ref:'UserSchema'},
+    project:{type:mongoose.Schema.Types.ObjectId, ref:'Project',required:true},
+    assignee:{type:mongoose.Schema.Types.ObjectId,ref:'User'},
     title:{type:String,required:true},
     status:{
         type:String,
@@ -20,4 +20,4 @@ const TaskSchema = mongoose.Schema({
 
 TaskSchema.index({project:1,status:1});
 
-module.exports = TaskSchema;
+module.exports = mongoose.model(Task,TaskSchema);
