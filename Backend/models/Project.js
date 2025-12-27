@@ -1,4 +1,4 @@
-const mongoose = required("mongoose");
+const mongoose = require("mongoose");
 
 const ProjectSchema = mongoose.Schema({
     name : { type: String, required: true },
@@ -14,4 +14,4 @@ const ProjectSchema = mongoose.Schema({
 
 },{timestamps:true});
 
-module.exports = mongoose.model(Project,ProjectSchema);
+module.exports = mongoose.model('Project',ProjectSchema);
