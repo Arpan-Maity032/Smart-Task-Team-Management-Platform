@@ -25,9 +25,10 @@ exports.registerUser = async (req,res) =>{
             });
         }
     }catch(error){
-        res.status(500).json({message:'error.message'});
+        res.status(500).json({message:error.message});
     }
 };
+
 
 
 // existing user login
@@ -53,7 +54,7 @@ exports.loginUser = async (req,res) =>{
             res.status(401).json({message:'Invalid email or password'});
         }
     }catch(error){
-        res.status(500).json({message:'error.message'});
+        res.status(500).json({message:error.message});
     }
 };
 
@@ -65,6 +66,6 @@ exports.logoutUser = async (req,res) =>{
         await redisClien.del(`sess:${req.user._id}`);
         res.status(200).json({message:'Successfully logged out'});
     }catch(error){
-        res.status(500).json({message:'error.message'});
+        res.status(500).json({message:error.message});
     }
 };
