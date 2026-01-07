@@ -1,5 +1,5 @@
 const User = require('../models/User');
-const redisClient = require('../config/redis');
+const { redisClient, connectRedis } = require('../config/redis');
 const generateToken = require('../utils/generateToken');
 
 
@@ -35,7 +35,7 @@ exports.registerUser = async (req,res) =>{
 exports.loginUser = async (req,res) =>{
     try{
         const {email,password} = req.body;
-        const user = await User.findOne({email});
+        const user = await User.findOne({email}).select("+password");
 
         if(user && (await user.matchPassword(password))){
             const token = generateToken(user._id);

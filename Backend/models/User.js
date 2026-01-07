@@ -9,6 +9,11 @@ const UserSchema = new mongoose.Schema({
   role: { type: String, enum: ['Admin', 'Manager', 'Member'], default: 'Member' }
 }, { timestamps: true });
 
+//mactch password
+UserSchema.methods.matchPassword = async function(enterPassword){
+  return await bcrypt.compare(enterPassword,this.password);
+};
+
 // Hash password before saving
 UserSchema.pre('save', async function(next) {
   if (!this.isModified('password')) return next();
