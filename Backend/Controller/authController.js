@@ -63,7 +63,7 @@ exports.loginUser = async (req,res) =>{
 
 exports.logoutUser = async (req,res) =>{
     try{
-        await redisClien.del(`sess:${req.user._id}`);
+        await redisClient.del(`sess:${req.user._id}`);
         res.status(200).json({message:'Successfully logged out'});
     }catch(error){
         res.status(500).json({message:error.message});
