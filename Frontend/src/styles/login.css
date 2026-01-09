@@ -1,0 +1,135 @@
+.login-page{
+    background: #0f172a;
+    background-image: radial-gradient(circle at top right, #1e293b, #020617);
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+}
+.login-page h2{
+    color: antiquewhite;
+    font-size: 2rem;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: 900;
+}
+.login-page p{
+    color: antiquewhite;
+    font-size: 1.2rem;
+}
+
+.login-page .form{
+    width:30rem;
+    border-radius: 1.25rem;
+    -webkit-border-radius: 1.25rem;
+    -moz-border-radius: 1.25rem;
+    -ms-border-radius: 1.25rem;
+    -o-border-radius: 1.25rem;
+    padding:2.5rem 1.8rem;
+    color: antiquewhite;
+    box-shadow: 0 .6rem 1.8rem rgba(51, 104, 122, 0.5);
+    display: flex;
+    flex-direction: column;
+}
+.checkbox{
+    display: flex;
+    align-items: center;
+    gap:.8rem;
+    margin-top: -1rem;
+}
+.checkbox label{
+    font-size: 1.2rem;
+    cursor: pointer;
+}
+.checkbox input{
+    transform: scale(1.5);
+    -webkit-transform: scale(1.5);
+    -moz-transform: scale(1.5);
+    -ms-transform: scale(1.5);
+    -o-transform: scale(1.5);
+    margin-top: 1rem;
+    margin-right: .6rem;
+}
+.login-page .form .input-gruop{
+    text-align: left;
+    margin-bottom: 1.25rem;
+    padding: .8rem;
+    width: 1rem;
+}
+.form input{
+    height:2rem;
+    padding: .5rem;
+    border-radius: 1.2rem;
+    -webkit-border-radius: 1.2rem;
+    -moz-border-radius: 1.2rem;
+    -ms-border-radius: 1.2rem;
+    -o-border-radius: 1.2rem;
+    margin-bottom: 1rem;
+}
+.btn{
+    height: 2.5rem;
+    padding: .5rem;
+    border-radius: 1.2rem;
+    -webkit-border-radius: 1.2rem;
+    -moz-border-radius: 1.2rem;
+    -ms-border-radius: 1.2rem;
+    -o-border-radius: 1.2rem;
+    background-color: rgb(87, 87, 247);
+    font-size: 1.5rem;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
+    color: antiquewhite;
+    
+}
+.forget-password{
+    display: flex;
+    justify-content: flex-end;
+    color: antiquewhite;
+    text-decoration: none;
+    margin-right: 1.5rem;
+    margin-top: .5rem;
+    margin-bottom: -1.5rem;
+}
+.hr-line {
+    display: flex;
+    align-items: center;
+    width: 30rem;       /* Ensure the container spans the full width */
+    margin: 1.6rem 0;
+}
+
+.hr-line hr {
+    flex-grow: 1;      /* Explicitly tell the line to grow */
+    border: none;
+    height: 1px;       /* Give it a physical height */
+    background-color: #ccc; /* Use background-color instead of border-top for better compatibility */
+    margin: 0;
+    opacity: 1;        /* Ensure it's not being faded out by a parent style */
+}
+
+.hr-line p {
+    padding: 0 1.5rem;
+    margin: 0;
+    color: antiquewhite;
+    font-weight: 900;
+    white-space: nowrap; /* Prevent "or" from wrapping to a new line */
+}
+
+.sign-up{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 2rem;
+    margin-top: -1rem;
+}
+.sign-up p{
+    font-size: 1.5rem;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: 500;
+}
+.sign-up a{
+    font-size: 1.5rem;
+    text-decoration: none;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: 700;
+}
