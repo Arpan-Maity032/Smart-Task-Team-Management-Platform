@@ -1,0 +1,23 @@
+.parent-div{
+    height: 100vh;
+    display: flex;
+    flex-direction: row;
+    margin: 1rem;
+}
+.register-form{
+    flex: 1;
+    background-color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+}
+
+.show-analyze{
+    flex: 1;
+    background-color: blue;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+}
