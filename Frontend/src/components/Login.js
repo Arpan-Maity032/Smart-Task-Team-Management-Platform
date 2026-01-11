@@ -1,9 +1,11 @@
 import React ,{useState} from 'react';
 import "../styles/login.css";
+import { useNavigate, Link } from "react-router-dom";
 
 
 function Login() {
   const [formData,setFormData] = useState({email:"",password:""});
+  const navigate = useNavigate();
   const handleChange = (e) => {
     setFormData({...formData,[e.target.name]:e.target.value});
   };
@@ -31,7 +33,7 @@ function Login() {
         else{
           sessionStorage.setItem("token",data.token);//Deleted when tab close
         }
-        alert('Login Successfull!');
+        navigate("/flash");//navigate flash page
       }else{
         alert(data.message || 'Login fauled');
       }
@@ -59,7 +61,7 @@ function Login() {
         </div>
         <div className='sign-up'>
             <p>Don't have an account?</p>
-            <a href="https://www.google.com">Sign Up</a>
+            <Link className="sign-up-link" to="/register">Sign Up</Link>
         </div>
     </div>
   )
