@@ -1,8 +1,8 @@
 const User = require('../models/User');
 const { redisClient, connectRedis } = require('../config/redis');
 const generateToken = require('../utils/generateToken');
-
-
+const generateResetToken = require('../utils/generateToken_resetPassword');
+const sendEmail = require("../utils/sendEmail");
 
 // New user registration
 exports.registerUser = async (req,res) =>{
@@ -67,5 +67,49 @@ exports.logoutUser = async (req,res) =>{
         res.status(200).json({message:'Successfully logged out'});
     }catch(error){
         res.status(500).json({message:error.message});
+    }
+};
+
+//Forgot Password request
+
+exports.forgotPassword = async (req,res) =>{
+    const {email} = req.body;
+
+    const user = await User.findOne({email});
+    if(!user){
+        return res.json({message:"If email exits,reset link sent"});
+    }
+    const resetToken = generateResetToken(user._id);
+
+    const resetLink = `http://localhost:3000/reset-password/${resetToken}`;
+    sendEmail(user.email,resetLink);
+    res.json({message:"Resent link sent"});
+};
+
+//verify reset-password
+exports.resetPassword = async (req,res) =>{
+    const {token} = req.params;
+    const {password} = req.body;
+
+    try{
+        const decoded = jwt.verify(
+            token,
+            process.env.JWT_RESET_SECRET
+        );
+
+        if(decoded.purpose !== "reset_password"){
+            return res.status(403).json({message:"Invalid token"});
+        }
+        const user = await User.findById(decoded.id);
+        if(!user){
+            return res.status(404).json({message:"User not found"});
+        }
+
+        user.password = password; //plain password
+        await user.save(); //pre('save') hook hashes it 
+
+        return res.json({message:"Password reset sucessful"});
+    }catch(error){
+        return res.status(400).json({message:"Token expired or invalid"});
     }
 };
