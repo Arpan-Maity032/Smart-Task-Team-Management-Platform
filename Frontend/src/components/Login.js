@@ -35,7 +35,7 @@ function Login() {
         }
         navigate("/flash");//navigate flash page
       }else{
-        alert(data.message || 'Login fauled');
+        alert(data.message || 'Login failed');
       }
     }catch(error){
       console.log('Error',error);
@@ -54,7 +54,7 @@ function Login() {
             <p className='checkbox'><input type="checkbox" id="remember"/>
             <label htmlFor="remember">Remember me</label></p>
             <button className="btn" type="submit">Submit</button>
-            <a className="forget-password" href="https://www.google.com">Forgot Password?</a>
+            <Link className="forget-password" to="/forget-password">Forgot Password?</Link>
         </form>
         <div className='hr-line'>
           <hr/><p>or</p><hr/>

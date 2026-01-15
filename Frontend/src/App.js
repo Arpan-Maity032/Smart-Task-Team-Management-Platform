@@ -3,6 +3,7 @@ import Login from "./components/Login";
 import Flash from "./components/Flash";
 import Dashboard from "./components/Dashboard";
 import Register from "./components/Register";
+import ForgetPassword from "./components/ForgetPassword";
 
 function App() {
   return (
@@ -11,6 +12,7 @@ function App() {
       <Route path="/flash" element={<Flash />} />
       <Route path="/dashboard" element={<Dashboard />} />
       <Route path="/register" element={<Register />}/>
+      <Route path="/forget-password" element={<ForgetPassword />}/>
     </Routes>
   );
 }
