@@ -1,9 +1,10 @@
 const jwt = require("jsonwebtoken");
 
-const generateResetToken = (id) => {
+const generateResetToken = (id,currentPassword) => {
+    const secret = process.env.JWT_RESET_SECRET + currentPassword;
     return jwt.sign(
         {id, purpose:"reset_password"},
-        process.env.JWT_RESET_SECRET,
+        secret,
         {expiresIn: "15m"},
     );
 };

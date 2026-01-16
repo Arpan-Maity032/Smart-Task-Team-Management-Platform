@@ -75,11 +75,11 @@ exports.logoutUser = async (req,res) =>{
 exports.forgotPassword = async (req,res) =>{
     const {email} = req.body;
 
-    const user = await User.findOne({email});
+    const user = await User.findOne({email}).select("+password");
     if(!user){
         return res.json({message:"If email exits,reset link sent"});
     }
-    const resetToken = generateResetToken(user._id);
+    const resetToken = generateResetToken(user._id,user.password);
 
     const resetLink = `http://localhost:3000/reset-password/${resetToken}`;
     sendEmail(user.email,resetLink);
@@ -87,29 +87,41 @@ exports.forgotPassword = async (req,res) =>{
 };
 
 //verify reset-password
-exports.resetPassword = async (req,res) =>{
-    const {token} = req.params;
-    const {password} = req.body;
+exports.resetPassword = async (req, res) => {
+    const { token } = req.params;
+    const { password } = req.body;
 
-    try{
-        const decoded = jwt.verify(
-            token,
-            process.env.JWT_RESET_SECRET
-        );
-
-        if(decoded.purpose !== "reset_password"){
-            return res.status(403).json({message:"Invalid token"});
-        }
-        const user = await User.findById(decoded.id);
-        if(!user){
-            return res.status(404).json({message:"User not found"});
+    try {
+        // 1. Decode first (without verifying) to get the user ID
+        const payload = jwt.decode(token);
+        if (!payload || !payload.id) {
+            return res.status(400).json({ message: "Invalid token format" });
         }
 
-        user.password = password; //plain password
-        await user.save(); //pre('save') hook hashes it 
+        const user = await User.findById(payload.id);
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
 
-        return res.json({message:"Password reset sucessful"});
-    }catch(error){
-        return res.status(400).json({message:"Token expired or invalid"});
+        // 2. Verify the token using a DYNAMIC secret
+        // This secret includes the user's current hashed password
+        const secret = process.env.JWT_RESET_SECRET + user.password;
+        
+        const decoded = jwt.verify(token, secret);
+
+        if (decoded.purpose !== "reset_password") {
+            return res.status(403).json({ message: "Invalid token" });
+        }
+
+        // 3. Update password
+        user.password = password; 
+        await user.save(); // This changes user.password hash in DB
+
+        // NOW: The 'secret' used above will never work again for this user 
+        // because user.password has changed!
+
+        return res.json({ message: "Password reset successful" });
+    } catch (error) {
+        return res.status(400).json({ message: "Token expired or already used" });
     }
 };
