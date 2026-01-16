@@ -1,13 +1,13 @@
 import React,{useState} from 'react';
 import "../styles/forgetPassword.css";
-import {useNavigate,Link} from 'react-router-dom';
+import {Link} from 'react-router-dom';
 
 function ForgetPassword() {
-    const [getData, setData] = useState({email:""});
-    const navigate = useNavigate();
+    const [email,setEmail] = useState("");
+    const [error, setError] = useState("");
 
     const handleChange =(e)=>{
-        setData({...getData,[e.target.name]:e.target.value});
+        setEmail(e.target.value);
     }
 
     const handleSubmit =async (e)=>{
@@ -18,11 +18,13 @@ function ForgetPassword() {
                 headers:{
                     "Content-Type": "application/json",
                 },
-                body:JSON.stringify(getData),
+                body:JSON.stringify({email}),
             });
+            const data =await response.json();
             if(response.ok){
-                navigate("/");
+                setError(`${data.message} ${email}`);
             }
+            setEmail("");
         }
         catch(error){
             console.log('Error',error);
@@ -34,7 +36,8 @@ function ForgetPassword() {
         <h2>Forgot your Password?</h2>
         <p>Enter your email so that we can send you pssword reset link</p>
         <form className='gmail-form' onSubmit={handleSubmit}>
-            <input type='email' name ='email' placeholder='Enter your registered Email'  required onChange={handleChange}/>
+            {error && <span className='error-text'>{error}</span>}
+            <input type='email' name ='email' placeholder='Enter your registered Email' value={email} required onChange={handleChange}/>
             <button className="btn-forgot">Submit</button>
         </form>
         <Link className='login-back' to="/">Back To Login</Link>
