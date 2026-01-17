@@ -1,7 +1,7 @@
 import React,{useEffect} from 'react';
-import flash from "../asserts/flask.png";
 import "../styles/flash.css";
 import { useNavigate } from 'react-router-dom';
+import LogoAnimation from "../utils/LogoAnimation";
 
 function Flash() {
     const navigate = useNavigate();
@@ -12,8 +12,8 @@ function Flash() {
         return ()=>clearTimeout(timer);
     },[navigate]);
   return (
-    <div>
-    <img src={flash} alt="flash page"/>
+    <div className='flash'>
+      <LogoAnimation />
     </div>
   )
 }
