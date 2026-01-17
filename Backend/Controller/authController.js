@@ -1,3 +1,4 @@
+const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 const { redisClient, connectRedis } = require('../config/redis');
 const generateToken = require('../utils/generateToken');
@@ -79,7 +80,7 @@ exports.forgotPassword = async (req,res) =>{
     if(!user){
         return res.json({message:"If email exits,reset link sent"});
     }
-    const resetToken = generateResetToken(user._id,user.password);
+    const resetToken = generateResetToken(user._id.toString(),user.password);
 
     const resetLink = `http://localhost:3000/reset-password/${resetToken}`;
     sendEmail(user.email,resetLink);
@@ -92,19 +93,15 @@ exports.resetPassword = async (req, res) => {
     const { password } = req.body;
 
     try {
-        // 1. Decode first (without verifying) to get the user ID
         const payload = jwt.decode(token);
         if (!payload || !payload.id) {
             return res.status(400).json({ message: "Invalid token format" });
         }
 
-        const user = await User.findById(payload.id);
+        const user = await User.findById(payload.id).select('+password');
         if (!user) {
             return res.status(404).json({ message: "User not found" });
         }
-
-        // 2. Verify the token using a DYNAMIC secret
-        // This secret includes the user's current hashed password
         const secret = process.env.JWT_RESET_SECRET + user.password;
         
         const decoded = jwt.verify(token, secret);
@@ -117,11 +114,12 @@ exports.resetPassword = async (req, res) => {
         user.password = password; 
         await user.save(); // This changes user.password hash in DB
 
-        // NOW: The 'secret' used above will never work again for this user 
-        // because user.password has changed!
-
         return res.json({ message: "Password reset successful" });
     } catch (error) {
-        return res.status(400).json({ message: "Token expired or already used" });
+        console.log("ERROR NAME:", error.name);     // e.g., JsonWebTokenError
+        console.log("ERROR MESSAGE:", error.message); // e.g., invalid signature
+        return res.status(400).json({ 
+            message: "Token error", 
+            dev_info: error.message});
     }
 };
