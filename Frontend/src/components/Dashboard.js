@@ -1,8 +1,11 @@
-import React from 'react'
+import React from 'react';
+import Sidebar from './mainproject/Sidebar';
 
 function Dashboard() {
   return (
-    <div>Wellcome to dashboard</div>
+    <>
+    <Sidebar/>
+    </>
   )
 }
 
